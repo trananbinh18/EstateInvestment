@@ -12,8 +12,6 @@ namespace EstateInvestmentWebApplication.Controllers
     {
         public IActionResult Index()
         {
-            var countUserAccess = HttpContext.Items["countUserAccess"];
-            ViewBag.countUserAccess = countUserAccess;
 
             return View();
         }
