@@ -20,8 +20,8 @@ namespace EstateInvestmentWebApplication.Controllers
     [Route("[controller]/[action]")]
     public class ManageController : Controller
     {
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly SignInManager<IdentityUser> _signInManager;
         private readonly IEmailSender _emailSender;
         private readonly ILogger _logger;
         private readonly UrlEncoder _urlEncoder;
@@ -30,8 +30,8 @@ namespace EstateInvestmentWebApplication.Controllers
         private const string RecoveryCodesKey = nameof(RecoveryCodesKey);
 
         public ManageController(
-          UserManager<ApplicationUser> userManager,
-          SignInManager<ApplicationUser> signInManager,
+          UserManager<IdentityUser> userManager,
+          SignInManager<IdentityUser> signInManager,
           IEmailSender emailSender,
           ILogger<ManageController> logger,
           UrlEncoder urlEncoder)
@@ -527,7 +527,7 @@ namespace EstateInvestmentWebApplication.Controllers
                 unformattedKey);
         }
 
-        private async Task LoadSharedKeyAndQrCodeUriAsync(ApplicationUser user, EnableAuthenticatorViewModel model)
+        private async Task LoadSharedKeyAndQrCodeUriAsync(IdentityUser user, EnableAuthenticatorViewModel model)
         {
             var unformattedKey = await _userManager.GetAuthenticatorKeyAsync(user);
             if (string.IsNullOrEmpty(unformattedKey))

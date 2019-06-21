@@ -20,9 +20,7 @@ namespace EstateInvestmentWebApplication.Controllers
         [HttpGet]
         public IActionResult CreateEstate()
         {
-            Estate estateModel = new Estate();
-
-            return View(estateModel);
+            return View();
         }
     }
 }
