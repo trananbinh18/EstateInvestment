@@ -13,6 +13,7 @@ using EstateInvestmentWebApplication.Models;
 using EstateInvestmentWebApplication.Services;
 using Microsoft.AspNetCore.Http;
 using System.Timers;
+using ReflectionIT.Mvc.Paging;
 
 namespace EstateInvestmentWebApplication
 {
@@ -39,6 +40,8 @@ namespace EstateInvestmentWebApplication
             services.AddTransient<IEmailSender, EmailSender>();
 
             services.AddMvc();
+            services.AddPaging();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

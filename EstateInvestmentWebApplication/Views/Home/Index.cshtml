@@ -2,6 +2,10 @@
     ViewData["Title"] = "Home Page";
 }
 
+@model  PagingList<EstateInvestmentWebApplication.Models.DatabaseEntitiesModel.EstateProject>
+@using ReflectionIT.Mvc.Paging
+@addTagHelper *, ReflectionIT.Mvc.Paging
+
 <div class="slide-one-item home-slider owl-carousel">
 
     <div class="site-blocks-cover" style="background-image: url(../images/hero_bg_1.jpg);" data-aos="fade" data-stellar-background-ratio="0.5">
@@ -166,223 +170,104 @@
             </div>
         </div>
         <div class="row mb-5">
-            <div class="col-md-6 col-lg-4 mb-4">
-                <a href="property-details.html" class="prop-entry d-block">
-                    <figure>
-                        <img src="~/images/img_1.jpg" alt="Image" class="img-fluid">
-                    </figure>
-                    <div class="prop-text">
-                        <div class="inner">
-                            <span class="price rounded">1,930,000 VND</span>
-                            <h3 class="title">853 S Lucerne Blvd</h3>
-                            <p class="location">Los Angeles, CA 90005</p>
-                        </div>
-                        <div class="prop-more-info">
-                            <div class="inner d-flex">
-                                <div class="col">
-                                    <span>Diện tích:</span>
-                                    <strong>240m<sup>2</sup></strong>
-                                </div>
-                                <div class="col">
-                                    <span>Phòng ngủ:</span>
-                                    <strong>2</strong>
-                                </div>
-                                <div class="col">
-                                    <span>Nhà tắm:</span>
-                                    <strong>2</strong>
-                                </div>
-                                <div class="col">
-                                    <span>Chỗ để xe:</span>
-                                    <strong>1</strong>
-                                </div>
+            @*<div class="col-md-6 col-lg-4 mb-4">
+            <a href="property-details.html" class="prop-entry d-block">
+                <figure>
+                    <img src="~/images/img_1.jpg" alt="Image" class="img-fluid">
+                </figure>
+                <div class="prop-text">
+                    <div class="inner">
+                        <span class="price rounded">1,930,000 VND</span>
+                        <h3 class="title">853 S Lucerne Blvd</h3>
+                        <p class="location">Los Angeles, CA 90005</p>
+                    </div>
+                    <div class="prop-more-info">
+                        <div class="inner d-flex">
+                            <div class="col">
+                                <span>Diện tích:</span>
+                                <strong>240m<sup>2</sup></strong>
+                            </div>
+                            <div class="col">
+                                <span>Phòng ngủ:</span>
+                                <strong>2</strong>
+                            </div>
+                            <div class="col">
+                                <span>Nhà tắm:</span>
+                                <strong>2</strong>
+                            </div>
+                            <div class="col">
+                                <span>Chỗ để xe:</span>
+                                <strong>1</strong>
                             </div>
                         </div>
                     </div>
-                </a>
-            </div>
-            <div class="col-md-6 col-lg-4 mb-4">
-                <a href="property-details.html" class="prop-entry d-block">
-                    <figure>
-                        <img src="~/images/img_2.jpg" alt="Image" class="img-fluid">
-                    </figure>
-                    <div class="prop-text">
-                        <div class="inner">
-                            <span class="price rounded">2,438,000 VND</span>
-                            <h3 class="title">853 S Lucerne Blvd</h3>
-                            <p class="location">Los Angeles, CA 90005</p>
-                        </div>
-                        <div class="prop-more-info">
-                            <div class="inner d-flex">
-                                <div class="col">
-                                    <span>Diện tích:</span>
-                                    <strong>240m<sup>2</sup></strong>
-                                </div>
-                                <div class="col">
-                                    <span>Phòng ngủ:</span>
-                                    <strong>2</strong>
-                                </div>
-                                <div class="col">
-                                    <span>Nhà tắm:</span>
-                                    <strong>2</strong>
-                                </div>
-                                <div class="col">
-                                    <span>Chỗ để xe:</span>
-                                    <strong>1</strong>
+                </div>
+            </a>
+        </div>*@
+            @foreach (var estate in Model)
+            {
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <a href="@Url.Action("DetailEstate", "EstateProject", new { id = estate.Id })" class="prop-entry d-block">
+                        <figure>
+                            <img src="~/images/img_1.jpg" alt="Image" class="img-fluid">
+                        </figure>
+                        <div class="prop-text">
+                            <div class="inner">
+                                <h3 class="title">@estate.Title</h3>
+                                <p class="location">Vị trí: @estate.EstateCatalog.Name</p>
+                            </div>
+                            <div class="prop-more-info">
+                                <div class="inner d-flex">
+                                    <div class="col m-t-10">
+                                        <strong>@estate.ShortDescription</strong>
+                                    </div>
+                                    @*<div class="col">
+                                        <span>Phòng ngủ:</span>
+                                        <strong>2</strong>
+                                    </div>
+                                    <div class="col">
+                                        <span>Nhà tắm:</span>
+                                        <strong>2</strong>
+                                    </div>
+                                    <div class="col">
+                                        <span>Chỗ để xe:</span>
+                                        <strong>1</strong>
+                                    </div>*@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </a>
-            </div>
-            <div class="col-md-6 col-lg-4 mb-4">
-                <a href="property-details.html" class="prop-entry d-block">
-                    <figure>
-                        <img src="~/images/img_3.jpg" alt="Image" class="img-fluid">
-                    </figure>
-                    <div class="prop-text">
-                        <div class="inner">
-                            <span class="price rounded">5,320,000 VND</span>
-                            <h3 class="title">853 S Lucerne Blvd</h3>
-                            <p class="location">Los Angeles, CA 90005</p>
-                        </div>
-                        <div class="prop-more-info">
-                            <div class="inner d-flex">
-                                <div class="col">
-                                    <span>Diện tích:</span>
-                                    <strong>240m<sup>2</sup></strong>
-                                </div>
-                                <div class="col">
-                                    <span>Phòng ngủ:</span>
-                                    <strong>2</strong>
-                                </div>
-                                <div class="col">
-                                    <span>Nhà tắm:</span>
-                                    <strong>2</strong>
-                                </div>
-                                <div class="col">
-                                    <span>Chỗ để xe:</span>
-                                    <strong>1</strong>
+                    </a>
+                </div>
+                @*<div class="col-md-6 col-lg-4 mb-4">
+                    <a href="@Url.Action("DetailEstate", "EstateProject", new { id = estate.Id })" class="prop-entry d-block">
+                        <figure>
+                            <img src="@estate.ImagePath" alt="Image" class="img-fluid">
+                        </figure>
+                        <div class="prop-text">
+                            <div class="inner">
+                                <h3 class="title">@estate.Title</h3>
+                                <p class="location">Vị trí: @estate.EstateCatalog.Name</p>
+                            </div>
+                            <div class="prop-more-info">
+                                <div class="inner d-flex">
+                                    <div class="col">
+                                        <strong>@estate.ShortDescription</strong>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </a>
-            </div>
+                    </a>
+                </div>*@
+            }
 
-            <div class="col-md-6 col-lg-4 mb-4">
-                <a href="property-details.html" class="prop-entry d-block">
-                    <figure>
-                        <img src="~/images/img_4.jpg" alt="Image" class="img-fluid">
-                    </figure>
-                    <div class="prop-text">
-                        <div class="inner">
-                            <span class="price rounded">2,350,000 VND</span>
-                            <h3 class="title">853 S Lucerne Blvd</h3>
-                            <p class="location">Los Angeles, CA 90005</p>
-                        </div>
-                        <div class="prop-more-info">
-                            <div class="inner d-flex">
-                                <div class="col">
-                                    <span>Diện tích:</span>
-                                    <strong>240m<sup>2</sup></strong>
-                                </div>
-                                <div class="col">
-                                    <span>Phòng ngủ:</span>
-                                    <strong>2</strong>
-                                </div>
-                                <div class="col">
-                                    <span>Nhà tắm:</span>
-                                    <strong>2</strong>
-                                </div>
-                                <div class="col">
-                                    <span>Chỗ để xe:</span>
-                                    <strong>1</strong>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </a>
-            </div>
-            <div class="col-md-6 col-lg-4 mb-4">
-                <a href="property-details.html" class="prop-entry d-block">
-                    <figure>
-                        <img src="~/images/img_5.jpg" alt="Image" class="img-fluid">
-                    </figure>
-                    <div class="prop-text">
-                        <div class="inner">
-                            <span class="price rounded">1,550,000 VND</span>
-                            <h3 class="title">853 S Lucerne Blvd</h3>
-                            <p class="location">Los Angeles, CA 90005</p>
-                        </div>
-                        <div class="prop-more-info">
-                            <div class="inner d-flex">
-                                <div class="col">
-                                    <span>Diện tích:</span>
-                                    <strong>240m<sup>2</sup></strong>
-                                </div>
-                                <div class="col">
-                                    <span>Phòng ngủ:</span>
-                                    <strong>2</strong>
-                                </div>
-                                <div class="col">
-                                    <span>Nhà tắm:</span>
-                                    <strong>2</strong>
-                                </div>
-                                <div class="col">
-                                    <span>Chỗ để xe:</span>
-                                    <strong>1</strong>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </a>
-            </div>
-            <div class="col-md-6 col-lg-4 mb-4">
-                <a href="property-details.html" class="prop-entry d-block">
-                    <figure>
-                        <img src="~/images/img_6.jpg" alt="Image" class="img-fluid">
-                    </figure>
-                    <div class="prop-text">
-                        <div class="inner">
-                            <span class="price rounded">4,291,000 VND</span>
-                            <h3 class="title">853 S Lucerne Blvd</h3>
-                            <p class="location">Los Angeles, CA 90005</p>
-                        </div>
-                        <div class="prop-more-info">
-                            <div class="inner d-flex">
-                                <div class="col">
-                                    <span>Diện tích:</span>
-                                    <strong>240m<sup>2</sup></strong>
-                                </div>
-                                <div class="col">
-                                    <span>Phòng ngủ:</span>
-                                    <strong>2</strong>
-                                </div>
-                                <div class="col">
-                                    <span>Nhà tắm:</span>
-                                    <strong>2</strong>
-                                </div>
-                                <div class="col">
-                                    <span>Chỗ để xe:</span>
-                                    <strong>1</strong>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </a>
-            </div>
 
         </div>
+        
+
         <div class="row">
             <div class="col-md-12 text-center">
                 <div class="site-pagination">
-                    <a href="#" class="active">1</a>
-                    <a href="#">2</a>
-                    <a href="#">3</a>
-                    <a href="#">4</a>
-                    <a href="#">5</a>
-                    <span>...</span>
-                    <a href="#">10</a>
+                    <vc:pager paging-list="@Model"/>
                 </div>
             </div>
         </div>
@@ -666,4 +551,9 @@
     </div>
 </div>
 
-<div>your count is: @ViewBag.countUserAccess</div>
+
+<script>
+    $(document).ready(function () {
+        $(".site-pagination").children("a li:text=1").addClass("active")
+    })
+</script>

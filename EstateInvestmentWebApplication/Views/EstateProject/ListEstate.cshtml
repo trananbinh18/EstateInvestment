@@ -1,0 +1,65 @@
+﻿@model IEnumerable<EstateInvestmentWebApplication.Models.DatabaseEntitiesModel.EstateProject>
+
+@{
+    ViewData["Title"] = "ListEstate";
+}
+
+<h2>ListEstate</h2>
+
+<p>
+    <a asp-action="CreateEstate">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Tiêu đề
+            </th>
+            <th>
+                Mô tả
+            </th>
+            <th>
+                Hình ảnh
+            </th>
+            <th>
+                Ngày tạo
+            </th>
+            <th>
+                Loại bất động sản
+            </th>
+            <th>
+                Người đăng
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ShortDescription)
+            </td>
+            <td>
+                <img style="max-width:150px;max-height:150px" src="@item.ImagePath"/>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreateDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EstateCatalog.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdentityUser.UserName)
+            </td>
+            <td>
+                <a asp-action="EditEstate" asp-route-id="@item.Id">Chỉnh sửa</a> |
+                <a asp-action="DetailEstate" asp-route-id="@item.Id">Xem chi tiết</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Xóa</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

@@ -1,0 +1,107 @@
+﻿
+@{
+    ViewData["Title"] = "FileBrowser";
+    Layout = null;
+}
+<style type="text/css">
+    body {
+        font-family: 'Segoe UI';
+        font-size: 80%
+    }
+
+    #form {
+        width: 600px;
+    }
+
+    #folderExplorer {
+        float: left;
+        width: 100px;
+    }
+
+    #fileExplorer {
+        float: left;
+        padding-left: 100px;
+        width: 680px;
+        border-left: 1px solid #dff0ff
+    }
+
+    .thumbnail {
+        float: left;
+        margin: 3px;
+        padding: 3px;
+        border: 1px solid #dff0ff
+    }
+
+    ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    li {
+        padding: 0;
+    }
+</style>
+
+<body>
+    <h2>FileBrowser</h2>
+    <div id="fileExplorer">
+        @foreach (var fileInfo in ViewBag.fileInfos)
+        {
+            <div class="thumbnail context-menu-one btn btn-neutral">
+                <img src="/images/imagescontent/@fileInfo.Name" title="@fileInfo.Name" width="120" height="100" />
+                <br />
+            </div>
+        }
+    </div>
+</body>
+
+
+
+
+
+<script src="~/js/jquery-3.3.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.7.1/jquery.contextMenu.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.7.1/jquery.contextMenu.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.7.1/jquery.ui.position.js"></script>
+
+<script>
+    $(document).ready(function () {
+        var funcNum = @(Context.Request.Query["CKEditorFuncNum"]+";")
+            $('#fileExplorer').on('click', 'img', function () {
+                var fileUrl = '/images/imagescontent/' + $(this).attr('title');
+                window.opener.CKEDITOR.tools.callFunction(funcNum, fileUrl);
+                window.close();
+            }).hover(function () {
+                $(this).css('cursor', 'pointer');
+            })
+
+
+        $(function() {
+        $.contextMenu({
+            selector: '.context-menu-one',
+            callback: function(key, options) {
+                var m = "clicked: " + key;
+                window.console && console.log(m) || alert(m);
+            },
+            items: {
+                "edit": {name: "Edit", icon: "edit"},
+                "cut": {name: "Cut", icon: "cut"},
+               copy: {name: "Copy", icon: "copy"},
+                "paste": {name: "Paste", icon: "paste"},
+                "delete": {name: "Delete", icon: "delete"},
+                "sep1": "---------",
+                "quit": {name: "Quit", icon: function(){
+                    return 'context-menu-icon context-menu-icon-quit';
+                }}
+            }
+        });
+
+        $('.context-menu-one').on('click', function(e){
+            console.log('clicked', this);
+        })
+    });
+    })
+</script>
+

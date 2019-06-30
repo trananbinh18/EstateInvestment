@@ -1,0 +1,15 @@
+﻿
+@{
+    ViewData["Title"] = "DetailEstate";
+}
+
+@model EstateInvestmentWebApplication.Models.DatabaseEntitiesModel.EstateProject
+
+<h1 style="padding-left:40px">@Model.Title</h1>
+
+<div style="padding-left:40px"><p>Create day: @Model.CreateDate.ToString(), Wrote by: @(Model.IdentityUser != null ? Model.IdentityUser.UserName: "")</p></div>
+<div class="row" style="padding-left:40px">
+    <div class="col-md-10">
+        @Html.Raw(Model.Content)
+    </div>
+</div>

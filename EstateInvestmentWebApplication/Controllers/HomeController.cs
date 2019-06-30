@@ -5,15 +5,39 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using EstateInvestmentWebApplication.Models;
+using EstateInvestmentWebApplication.Data;
+using EstateInvestmentWebApplication.Models.DatabaseEntitiesModel;
+using Microsoft.EntityFrameworkCore;
+using ReflectionIT.Mvc.Paging;
 
 namespace EstateInvestmentWebApplication.Controllers
 {
     public class HomeController : Controller
     {
-        public IActionResult Index()
-        {
+        ApplicationDbContext _dbContext;
 
-            return View();
+        public HomeController(ApplicationDbContext db) 
+        {
+            _dbContext = db;
+        }
+
+        public async Task<IActionResult> Index(int id = 0,int page = 1)
+        {
+            IOrderedQueryable<EstateProject> listEstate;
+            //Load Estate Project by catalog
+            if (id != 0)
+            {
+                listEstate = _dbContext.EstateProjects.Where(x => x.CatalogId == id).OrderByDescending(x => x.CreateDate); ;
+            }
+            //Default is all Estate Project of catalog
+            else
+            {
+                listEstate = _dbContext.EstateProjects.OrderByDescending(x => x.CreateDate); ;
+            }
+
+            var model = await PagingList.CreateAsync(listEstate, 6, page);
+
+            return View(model);
         }
 
         public IActionResult About()
