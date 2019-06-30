@@ -1,78 +1,73 @@
 ﻿@model EstateInvestmentWebApplication.Models.ViewModels.CreateEstateViewModel
 
 @{
-    ViewData["Title"] = "CreateEstate";
+    ViewData["Title"] = "Thêm dự án";
 }
 
-<h2>CreateEstate</h2>
+<div class="container">
+    <h2>Thêm dự án mới</h2>
+    <hr />
 
-<h4>Estate</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="CreateEstate" enctype="multipart/form-data">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
-            <div class="form-group">
-                <label asp-for="Image" class="control-label">Hình ảnh:</label>
-                <div class="file-upload">
-                    <button class="file-upload-btn" type="button" onclick="$('.file-upload-input').trigger( 'click' )">Add Image</button>
-
-                    <div class="image-upload-wrap">
-                        <input asp-for="Image" class="file-upload-input" type='file' onchange="readURL(this);" accept="image/*" />
-                        <div class="drag-text">
-                            <h3>Drag and drop a file or select add Image</h3>
-                        </div>
-                    </div>
-                    <div class="file-upload-content">
-                        <img class="file-upload-image" src="#" alt="your image" />
-                        <div class="image-title-wrap">
-                            <button type="button" onclick="removeUpload()" class="remove-image">Remove <span class="image-title">Uploaded Image</span></button>
-                        </div>
-                    </div>
+    <form asp-action="CreateEstate" enctype="multipart/form-data">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group required-field">
+                    <label asp-for="Title" class="control-label">Tên dự án:</label>
+                    <input asp-for="Title" class="form-control" placeholder="Mời nhập tên dự án" />
+                    <span asp-validation-for="Title" class="text-danger"></span>
                 </div>
-                <span asp-validation-for="Image" class="text-danger"></span>
+                <div class="form-group required-field">
+                    <label asp-for="ShortDescription" class="control-label">Mô tả ngắn cho dự án:</label>
+                    <input asp-for="ShortDescription" class="form-control" placeholder="Mời nhập mô tả ngắn cho dự án" />
+                    <span asp-validation-for="ShortDescription" class="text-danger"></span>
+                </div>
+                <div class="form-group required-field">
+                    <label asp-for="CatalogId" class="control-label">Khu vực:</label>
+                    <select asp-for="CatalogId" class="form-control">
+                        @foreach (var catalog in ViewBag.listCatalog)
+                        {
+                            <option value="@catalog.Id">@catalog.Name</option>
+                        }
+                    </select>
+                    <span asp-validation-for="CatalogId" class="text-danger"></span>
+                </div>
+                <div class="form-group required-field">
+                    <label asp-for="Image" class="control-label">Hình ảnh đại diện:</label>
+                    <div class="file-upload">
+                        @*<button class="file-upload-btn" type="button" onclick="$('.file-upload-input').trigger( 'click' )">Thêm ảnh đại diện</button>*@
+                        <div class="image-upload-wrap">
+                            <input asp-for="Image" class="file-upload-input" type='file' onchange="readURL(this);" accept="image/*" />
+                            <div class="drag-text">
+                                <h3>Thêm ảnh đại diện cho dự án</h3>
+                            </div>
+                        </div>
+                        <div class="file-upload-content">
+                            <img class="file-upload-image" src="#" alt="your image" />
+                            <div class="image-title-wrap">
+                                <button type="button" onclick="removeUpload()" class="remove-image">Xóa <span class="image-title">Uploaded Image</span></button>
+                            </div>
+                        </div>
+                    </div>
+                    <span asp-validation-for="Image" class="text-danger"></span>
+                </div>
             </div>
-
-            <div class="form-group">
-                <label asp-for="Title" class="control-label">Tiêu đề:</label>
-                <input asp-for="Title" class="form-control" />
-                <span asp-validation-for="Title" class="text-danger"></span>
+            <div class="col-md-6">
+                <div class="form-group required-field">
+                    <label asp-for="Content" class="control-label">Nội dung:</label>
+                    <textarea asp-for="Content" class="form-control"></textarea>
+                    <span asp-validation-for="Content" class="text-danger"></span>
+                </div>
             </div>
-
-            <div class="form-group">
-                <label asp-for="CatalogId" class="control-label">Loại dự án:</label>
-                <select asp-for="CatalogId" class="form-control">
-                    @foreach(var catalog in ViewBag.listCatalog)
-                    {
-                        <option value="@catalog.Id">@catalog.Name</option>
-                    }
-                </select>
-                <span asp-validation-for="CatalogId" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="ShortDescription" class="control-label">Mô tả:</label>
-                <input asp-for="ShortDescription" class="form-control" />
-                <span asp-validation-for="ShortDescription" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="Content" class="control-label">Nội dung:</label>
-                <textarea asp-for="Content" class="form-control"></textarea>
-                <span asp-validation-for="Content" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-default" />
-            </div>
-        </form>
+        </div>
+        <div class="form-group d-flex justify-content-end">
+            <input class="btn btn-primary py-2 px-4" type="submit" value="Thêm dự án"/>
+        </div>
+    </form>
+    <div>
+        <a asp-action="ListEstate">Xem danh sách dự án</a>
     </div>
 </div>
-
-<div>
-    <a asp-action="ListEstate">Back to List</a>
-</div>
-
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

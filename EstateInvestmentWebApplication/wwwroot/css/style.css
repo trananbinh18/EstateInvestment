@@ -1068,7 +1068,7 @@ a {
     margin-bottom: 0; }
   .prop-entry .prop-text {
     position: absolute;
-    bottom: -50px;
+    bottom: -19%;
     width: 100%;
     z-index: 2;
     -webkit-transition: .3s all ease;
@@ -1148,9 +1148,8 @@ a {
 
 .file-upload {
     background-color: #ffffff;
-    width: 600px;
+    width: 100%;
     margin: 0 auto;
-    padding: 20px;
 }
 
 .file-upload-btn {
@@ -1259,3 +1258,8 @@ a {
 }
 
 /*End Upload image*/
+
+.required-field label::after {
+    content: "*";
+    color: red;
+}

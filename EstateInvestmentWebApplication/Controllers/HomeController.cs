@@ -20,7 +20,8 @@ namespace EstateInvestmentWebApplication.Controllers
         {
             _dbContext = db;
         }
-
+        
+        //[Route("trang-chu")]
         public async Task<IActionResult> Index(int id = 0,int page = 1)
         {
             IOrderedQueryable<EstateProject> listEstate;
@@ -40,6 +41,7 @@ namespace EstateInvestmentWebApplication.Controllers
             return View(model);
         }
 
+        [Route("gioi-thieu")]
         public IActionResult About()
         {
             ViewData["Message"] = "Your application description page.";
@@ -47,10 +49,17 @@ namespace EstateInvestmentWebApplication.Controllers
             return View();
         }
 
+        [Route("lien-he")]
         public IActionResult Contact()
         {
             ViewData["Message"] = "Your contact page.";
 
+            return View();
+        }
+
+        [Route("tin-tuc")]
+        public IActionResult News()
+        {
             return View();
         }
 
