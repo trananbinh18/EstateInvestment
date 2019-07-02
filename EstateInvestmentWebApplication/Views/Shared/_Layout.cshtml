@@ -1,7 +1,7 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-    <title>Estate</title>
+    <title>@ViewData["Title"]</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
@@ -71,22 +71,22 @@
                                     <a href="@Url.Action("Index", "Home")">Trang chủ</a>
                                 </li>
                                 <li class="has-children">
-                                    <a href="properties.html">Bất động sản</a>
+                                    <a href="javascript:void(0)">Dự án</a>
                                     <ul class="dropdown">
-                                        <li><a href="#">Mua</a></li>
-                                        <li><a href="#">Bán</a></li>
-                                        <li><a href="#">Cho thuê</a></li>
-                                        <li class="has-children">
+                                        <li><a href="#">Đất nền Vũng Tàu</a></li>
+                                        <li><a href="#">Đất nền Đà Lạt</a></li>
+                                        <li><a href="#">Đất nền Hồ Chí Minh</a></li>
+                                        @*<li class="has-children">
                                             <a href="#">Menu</a>
                                             <ul class="dropdown">
                                                 <li><a href="#">Menu One</a></li>
                                                 <li><a href="#">Menu Two</a></li>
                                                 <li><a href="#">Menu Three</a></li>
                                             </ul>
-                                        </li>
+                                        </li>*@
                                     </ul>
                                 </li>
-                                <li><a href="blog.html">News</a></li>
+                                <li><a href="@Url.Action("News", "Home")">Tin tức</a></li>
                                 <li><a href="@Url.Action("About", "Home")">Giới thiệu</a></li>
                                 <li><a href="@Url.Action("Contact", "Home")">Liên hệ</a></li>
                             </ul>
@@ -101,6 +101,52 @@
 
     @RenderBody()
 
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Thông tin tư vấn</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                  </button>
+              </div>
+              <form asp-controller="" asp-action="">
+                  <div class="modal-body">
+                      <div class="form-group required-field">
+                          <label>Họ và tên:</label>
+                          <input type="text" class="form-control" id="" placeholder="Họ và tên" value="">
+                      </div>
+                      <div class="form-group">
+                          <label>Địa chỉ email:</label>
+                          <input type="text" class="form-control" id="" placeholder="Địa chỉ email" value="">
+                      </div>
+                      <div class="form-group required-field">
+                          <label>Số điện thoại:</label>
+                          <input type="text" class="form-control" id="" placeholder="Số điện thoại" value="">
+                      </div>
+                      <div class="form-group required-field">
+                          <label>Thông tin tư vấn:</label>
+                          <input type="text" class="form-control" id="" placeholder="Thông tin tư vấn" value="">
+                      </div>
+                  </div>
+                  <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                      <button type="submit" class="btn btn-primary">Đăng ký</button>
+                  </div>
+              </form>
+          </div>
+      </div>
+    </div>
+
+    <div class="site-section site-section-sm bg-primary">
+        <div class="container">
+            <div class="row d-flex justify-content-center">
+                @*<div class="col-md-8">*@
+                <a href="#" class="btn btn-outline-primary btn-lg" data-toggle="modal" data-target="#exampleModal">Đăng ký tư vấn dự án</a>
+            </div>
+        </div>
+    </div>
+
     <footer class="site-footer">
         <div class="container">
             <div class="row">
@@ -109,9 +155,6 @@
                         <h3 class="footer-heading mb-4">Giới thiệu về Estate</h3>
                         <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Saepe pariatur reprehenderit vero atque, consequatur id ratione, et non dignissimos culpa? Ut veritatis, quos illum totam quis blanditiis, minima minus odio!</p>
                     </div>
-
-
-
                 </div>
                 <div class="col-lg-4 mb-5 mb-lg-0">
                     <div class="row mb-5">
@@ -122,20 +165,20 @@
                             <ul class="list-unstyled">
                                 <li><a href="@Url.Action("Index", "Home")">Trang chủ</a></li>
                                 @*<li><a href="#">Buy</a></li>
-                                <li><a href="#">Rent</a></li>*@
+                                    <li><a href="#">Rent</a></li>*@
                                 <li><a href="#">Dự án</a></li>
                                 <li><a href="@Url.Action("About", "Home")">Giới thiệu</a></li>
                                 <li><a href="@Url.Action("Contact", "Home")">Liên hệ</a></li>
                             </ul>
                         </div>
                         @*<div class="col-md-6 col-lg-6">
-                            <ul class="list-unstyled">
-                                <li><a href="@Url.Action("About", "Home")">Giới thiệu</a></li>
-                                <li><a href="#">Privacy Policy</a></li>
-                                <li><a href="@Url.Action("Contact", "Home")">Liên hệ</a></li>
-                                <li><a href="#">Terms</a></li>
-                            </ul>
-                        </div>*@
+                                <ul class="list-unstyled">
+                                    <li><a href="@Url.Action("About", "Home")">Giới thiệu</a></li>
+                                    <li><a href="#">Privacy Policy</a></li>
+                                    <li><a href="@Url.Action("Contact", "Home")">Liên hệ</a></li>
+                                    <li><a href="#">Terms</a></li>
+                                </ul>
+                            </div>*@
                     </div>
 
 
@@ -143,16 +186,12 @@
 
                 <div class="col-lg-4 mb-5 mb-lg-0">
                     <h3 class="footer-heading mb-4">Theo dõi chúng tôi trên</h3>
-
                     <div>
                         <a href="#" class="pl-0 pr-3"><span class="icon-facebook"></span></a>
                         <a href="#" class="pl-3 pr-3"><span class="icon-twitter"></span></a>
                         <a href="#" class="pl-3 pr-3"><span class="icon-instagram"></span></a>
                         <a href="#" class="pl-3 pr-3"><span class="icon-linkedin"></span></a>
                     </div>
-
-
-
                 </div>
 
             </div>
@@ -160,7 +199,7 @@
                 <div class="col-md-12">
                     <p>
                         <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                        <script>Copyright &copy;</script>
+                        <script>Copyright & copy;</script>
                         <script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="icon-heart text-danger" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
                         <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
                     </p>
@@ -170,7 +209,7 @@
         </div>
     </footer>
 
-    
+
     <script src="~/js/jquery-migrate-3.0.1.min.js"></script>
     <script src="~/js/jquery-ui.js"></script>
     <script src="~/js/popper.min.js"></script>

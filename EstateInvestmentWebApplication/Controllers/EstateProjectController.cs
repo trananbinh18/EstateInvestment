@@ -34,18 +34,16 @@ namespace EstateInvestmentWebApplication.Controllers
             _roleManager = rm;
         }
 
-
-
         [HttpGet]
+        [Route("them-du-an")]
         public IActionResult CreateEstate()
         {
             ViewBag.listCatalog = _dbContext.EstateCatalogs.ToList();
             return View();
         }
 
-
-
         [HttpPost]
+        [Route("them-du-an")]
         public IActionResult CreateEstate(CreateEstateViewModel model)
         {
             if (ModelState.IsValid)
@@ -66,15 +64,13 @@ namespace EstateInvestmentWebApplication.Controllers
                 _dbContext.EstateProjects.Add(estateProject);
                 _dbContext.SaveChanges();
 
-                return RedirectToAction("Index", "Home");
-
+                //return RedirectToAction("Index", "Home");
+                return RedirectToAction("DetailEstate", "EstateProject", new { id = estateProject.Id });
             }
 
             ViewBag.listCatalog = _dbContext.EstateCatalogs.ToList();
             return View(model);
         }
-
-
 
         [HttpGet]
         public IActionResult EditEstate(int id)
@@ -99,7 +95,7 @@ namespace EstateInvestmentWebApplication.Controllers
         [HttpPost]
         public IActionResult EditEstate(CreateEstateViewModel model)
         {
-            if(model.Image == null)
+            if (model.Image == null)
             {
                 ModelState["Image"].ValidationState = Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Valid;
             }
@@ -111,7 +107,7 @@ namespace EstateInvestmentWebApplication.Controllers
                 estate.Title = model.Title;
                 estate.ShortDescription = model.ShortDescription;
                 estate.Content = model.Content;
-                if(model.Image != null)
+                if (model.Image != null)
                 {
                     //Delete Old Thumbnail File Image
                     var filePathArr = estate.ImagePath.Split('/');
@@ -138,7 +134,7 @@ namespace EstateInvestmentWebApplication.Controllers
             return View(model);
         }
 
-
+        [Route("du-an/{id}")]
         public IActionResult DetailEstate(int id)
         {
             var estate = _dbContext.EstateProjects.Find(id);
