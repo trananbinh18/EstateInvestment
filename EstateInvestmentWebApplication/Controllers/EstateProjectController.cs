@@ -196,6 +196,7 @@ namespace EstateInvestmentWebApplication.Controllers
             return View(listEstate);
         }
 
+
         [HttpPost]
         public JsonResult UploadImage(IFormFile upload, string imageFolder = "")
         {
@@ -210,6 +211,31 @@ namespace EstateInvestmentWebApplication.Controllers
 
             return Json(new { uploaded = 1, fileName = fileName, url = "/images/" + imageFolder + "/" + fileName });
         }
+
+
+        [HttpPost]
+        public JsonResult DeleteImage([FromBody]string data)
+        {
+            try
+            {
+                string filePath = Path.Combine(Directory.GetCurrentDirectory(), _hostingEnvironment.WebRootPath, "images", "imagescontent", data);
+                if (System.IO.File.Exists(filePath))
+                {
+                    System.IO.File.Delete(filePath);
+                    return Json(new { status = "success", message = "Xoá ảnh thành công" });
+                }
+
+                return Json(new { status = "fail", message = "Không tìm thấy ảnh" });
+                
+            }
+            catch (Exception e)
+            {
+                return Json(new { status= "fail", message= "Không thể xoá ảnh" });
+            }
+
+        }
+
+
 
         public IActionResult FileBrowser(IFormFile upload)
         {

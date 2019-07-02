@@ -1,16 +1,16 @@
-﻿@model EstateInvestmentWebApplication.Models.ViewModels.CreateEstateViewModel
+﻿@model EstateInvestmentWebApplication.Models.ViewModels.CreateNewViewModel
 
 @{
-    ViewData["Title"] = "EditEstate";
+    ViewData["Title"] = "EditNew";
 }
 
-<h2>Chỉnh sửa dự án</h2>
+<h2>Chỉnh sửa tin tức</h2>
 
 
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="EditEstate" enctype="multipart/form-data">
+        <form asp-action="EditNew" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
             <div class="form-group">
@@ -40,16 +40,6 @@
                 <span asp-validation-for="Title" class="text-danger"></span>
             </div>
 
-            <div class="form-group">
-                <label asp-for="CatalogId" class="control-label">Loại dự án:</label>
-                <select asp-for="CatalogId" class="form-control">
-                    @foreach (var catalog in ViewBag.listCatalog)
-                    {
-                        <option value="@catalog.Id">@catalog.Name</option>
-                    }
-                </select>
-                <span asp-validation-for="CatalogId" class="text-danger"></span>
-            </div>
 
             <div class="form-group">
                 <label asp-for="ShortDescription" class="control-label">Mô tả:</label>

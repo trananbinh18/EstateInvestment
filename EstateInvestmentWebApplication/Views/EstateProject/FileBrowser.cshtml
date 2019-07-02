@@ -48,7 +48,7 @@
     <div id="fileExplorer">
         @foreach (var fileInfo in ViewBag.fileInfos)
         {
-            <div class="thumbnail context-menu-one btn btn-neutral">
+            <div id="tn_@fileInfo.Name.Replace('.','_').Trim()" class="thumbnail context-menu-one btn btn-neutral">
                 <img src="/images/imagescontent/@fileInfo.Name" title="@fileInfo.Name" width="120" height="100" />
                 <br />
             </div>
@@ -68,6 +68,7 @@
 
 <script>
     $(document).ready(function () {
+        //Setup for Left Click Image
         var funcNum = @(Context.Request.Query["CKEditorFuncNum"]+";")
             $('#fileExplorer').on('click', 'img', function () {
                 var fileUrl = '/images/imagescontent/' + $(this).attr('title');
@@ -77,31 +78,61 @@
                 $(this).css('cursor', 'pointer');
             })
 
-
+        //Setup for Right Click Image
         $(function() {
-        $.contextMenu({
-            selector: '.context-menu-one',
-            callback: function(key, options) {
-                var m = "clicked: " + key;
-                window.console && console.log(m) || alert(m);
-            },
-            items: {
-                "edit": {name: "Edit", icon: "edit"},
-                "cut": {name: "Cut", icon: "cut"},
-               copy: {name: "Copy", icon: "copy"},
-                "paste": {name: "Paste", icon: "paste"},
-                "delete": {name: "Delete", icon: "delete"},
-                "sep1": "---------",
-                "quit": {name: "Quit", icon: function(){
-                    return 'context-menu-icon context-menu-icon-quit';
-                }}
-            }
+            $.contextMenu({
+                selector: '.context-menu-one',
+                callback: function (key, options) {
+                    if (key == "delete") {
+                        let imageSelect = options.$trigger.children()[0];
+                        let imageName = imageSelect.title;
+
+                        let data = { "data": imageName }
+                        $.ajax({
+                            url: "@Url.Action("DeleteImage", "EstateProject")",
+                            type: "post",
+                            dataType: "json",
+                            contentType: "application/json; charset=utf-8",
+                            data: JSON.stringify(imageName),
+                            traditional: false
+                        }).done(function (data) {
+                            console.log(data)
+                            if (data.status == "success") {
+                                alert("Đã xoá ảnh thành công")
+                                let thumbnailId = imageName.replace(".", "_")
+                                console.log("t", thumbnailId, imageName)
+                                $("#tn_" + thumbnailId).remove();
+
+                            } else {
+                                alert("Không thể xoá ảnh")
+                            }
+
+                        })
+
+                    } else if (key == "edit") {
+                        //Select Image
+                        let imageSelect = options.$trigger.children()[0];
+                        let imageName = imageSelect.title;
+                        let fileUrl = '/images/imagescontent/' + imageName
+
+                        window.opener.CKEDITOR.tools.callFunction(funcNum, fileUrl);
+                        window.close();
+                    }
+                },
+                items: {
+                    "edit": {name: "Chọn", icon: "edit"},
+                    "delete": {name: "Xoá", icon: "delete"}
+                }
+            });
+
+            $('.context-menu-one').on('click', function(e){
+                console.log('clicked', this);
+        
+
+            })
         });
 
-        $('.context-menu-one').on('click', function(e){
-            console.log('clicked', this);
-        })
-    });
+
     })
 </script>
 
