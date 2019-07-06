@@ -1,15 +1,18 @@
-﻿
+﻿@model EstateInvestmentWebApplication.Models.DatabaseEntitiesModel.New
 @{
-    ViewData["Title"] = "DetailNew";
+    ViewData["Title"] = Model.Title;
 }
 
-@model EstateInvestmentWebApplication.Models.DatabaseEntitiesModel.New
+<div class="container">
+    <div class="col-md-12 p-0">
+        <div class="text-center mb-20"><img src="@Model.ImagePath" style="width: 600px; height: auto" /></div>
+        <h1>@Model.Title</h1>
 
-<h1 style="padding-left:40px">@Model.Title</h1>
-
-<div style="padding-left:40px"><p>Create day: @Model.CreateDate.ToString(), Wrote by: @(Model.IdentityUser != null ? Model.IdentityUser.UserName : "")</p></div>
-<div class="row" style="padding-left:40px">
-    <div class="col-md-10">
-        @Html.Raw(Model.Content)
+        <div><p>Ngày tạo: @Model.CreateDate.ToString("d") @(Model.IdentityUser != null ? " - Bởi: " + Model.IdentityUser.UserName : "")</p></div>
+        <div class="row">
+            <div class="col-md-10">
+                @Html.Raw(Model.Content)
+            </div>
+        </div>
     </div>
 </div>

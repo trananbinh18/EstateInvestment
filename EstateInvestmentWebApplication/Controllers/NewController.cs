@@ -32,14 +32,14 @@ namespace EstateInvestmentWebApplication.Controllers
         }
 
         [HttpGet]
+        [Route("admin/tin-tuc/tao-tin-tuc")]
         public IActionResult CreateNew()
         {
             return View();
         }
 
-
-
         [HttpPost]
+        [Route("admin/tin-tuc/tao-tin-tuc")]
         public IActionResult CreateNew(CreateNewViewModel model)
         {
             if (ModelState.IsValid)
@@ -59,9 +59,8 @@ namespace EstateInvestmentWebApplication.Controllers
 
                 _dbContext.News.Add(news);
                 _dbContext.SaveChanges();
-
-                return RedirectToAction("Index", "Home");
-
+                
+                return RedirectToAction("ListNew");
             }
 
             return View(model);
@@ -69,6 +68,7 @@ namespace EstateInvestmentWebApplication.Controllers
 
 
         [HttpGet]
+        [Route("admin/tin-tuc/chinh-sua/{id}")]
         public IActionResult EditNew(int id)
         {
             var news = _dbContext.News.Find(id);
@@ -87,6 +87,7 @@ namespace EstateInvestmentWebApplication.Controllers
 
 
         [HttpPost]
+        [Route("admin/tin-tuc/chinh-sua/{id}")]
         public IActionResult EditNew(CreateNewViewModel model)
         {
             if (model.Image == null)
@@ -127,8 +128,8 @@ namespace EstateInvestmentWebApplication.Controllers
             return View(model);
         }
 
-
-
+        [HttpGet]
+        [Route("tin-tuc/{id}")]
         public IActionResult DetailNew(int id)
         {
             var news = _dbContext.News.Find(id);
@@ -137,6 +138,7 @@ namespace EstateInvestmentWebApplication.Controllers
         }
 
         [HttpGet]
+        [Route("admin/tin-tuc")]
         public IActionResult ListNew()
         {
             var listNews = _dbContext.News.ToList();
@@ -183,13 +185,5 @@ namespace EstateInvestmentWebApplication.Controllers
             _dbContext.SaveChanges();
             return RedirectToAction("ListNew");
         }
-
-
-
-      
-
-
-
-
     }
 }

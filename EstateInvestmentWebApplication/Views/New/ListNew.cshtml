@@ -1,9 +1,10 @@
 ﻿@model IEnumerable<EstateInvestmentWebApplication.Models.DatabaseEntitiesModel.New>
 
     @{
-        ViewData["Title"] = "ListNew";
+        ViewData["Title"] = "Danh sách tin tức";
     }
 
+<div class="container">
     <h2>Danh sách tin tức</h2>
 
     <p>
@@ -12,12 +13,13 @@
     <table class="table">
         <thead>
             <tr>
+                <th>#</th>
                 <th>
                     Tiêu đề
                 </th>
-                <th>
+                @*<th>
                     Mô tả
-                </th>
+                </th>*@
                 <th>
                     Hình ảnh
                 </th>
@@ -27,19 +29,20 @@
                 <th>
                     Người đăng
                 </th>
-                <th></th>
+                <th>Tùy chọn</th>
             </tr>
         </thead>
         <tbody>
             @foreach (var item in Model)
             {
                 <tr>
+                    <td>@(Array.IndexOf(Model.ToArray(), item) + 1)</td>
                     <td>
                         @Html.DisplayFor(modelItem => item.Title)
                     </td>
-                    <td>
+                    @*<td>
                         @Html.DisplayFor(modelItem => item.ShortDescription)
-                    </td>
+                    </td>*@
                     <td>
                         <img style="max-width:150px;max-height:150px" src="@item.ImagePath" />
                     </td>
@@ -58,3 +61,4 @@
             }
         </tbody>
     </table>
+</div>
