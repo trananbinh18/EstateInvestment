@@ -35,7 +35,7 @@ namespace EstateInvestmentWebApplication.Controllers
         }
 
         [HttpGet]
-        [Route("them-du-an")]
+        [Route("admin/themduan")]
         public IActionResult CreateEstate()
         {
             ViewBag.listCatalog = _dbContext.EstateCatalogs.ToList();
@@ -43,7 +43,7 @@ namespace EstateInvestmentWebApplication.Controllers
         }
 
         [HttpPost]
-        [Route("them-du-an")]
+        [Route("admin/themduan")]
         public IActionResult CreateEstate(CreateEstateViewModel model)
         {
             if (ModelState.IsValid)
@@ -134,7 +134,7 @@ namespace EstateInvestmentWebApplication.Controllers
             return View(model);
         }
 
-        [Route("du-an/{id}")]
+        [Route("duan/{id}")]
         public IActionResult DetailEstate(int id)
         {
             var estate = _dbContext.EstateProjects.Find(id);
@@ -186,6 +186,7 @@ namespace EstateInvestmentWebApplication.Controllers
 
 
         [HttpGet]
+        [Route("admin")]
         public IActionResult ListEstate()
         {
             var listEstate = _dbContext.EstateProjects.ToList();

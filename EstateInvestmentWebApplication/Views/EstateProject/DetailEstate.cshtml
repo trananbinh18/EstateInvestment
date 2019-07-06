@@ -1,10 +1,11 @@
 ﻿@model EstateInvestmentWebApplication.Models.DatabaseEntitiesModel.EstateProject
 @{
-    ViewData["Title"] = "DetailEstate";
+    ViewData["Title"] = Model.Title;
 }
 
 <div class="container">
-    <div class="col-md-8 p-0">
+    <div class="col-md-12 p-0">
+        <div class="text-center mb-20"><img src="@Model.ImagePath" style="width: 600px; height: auto" /></div>
         <h1>@Model.Title</h1>
         <div><p>Ngày tạo: @Model.CreateDate.ToString("d")</p></div>
         @Html.Raw(Model.Content)

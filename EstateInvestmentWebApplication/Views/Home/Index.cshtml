@@ -61,7 +61,7 @@
                 <div class="col-md-6 col-lg-4 mb-4">
                     <a href="@Url.Action("DetailEstate", "EstateProject", new { id = estate.Id })" class="prop-entry d-block">
                         <figure>
-                            <img src="~/images/img_1.jpg" alt="Image" class="img-fluid">
+                            <img src="@estate.ImagePath" alt="Image" class="img-fluid">
                         </figure>
                         <div class="prop-text">
                             <div class="inner">
@@ -71,107 +71,8 @@
                             <div class="prop-more-info">
                                 <div class="inner d-flex">
                                     <div class="col m-t-10">
-                                        <strong>Tại sao iPhone SE sở hữu cầu hình ngang ngửa iPhone 6s nhưng lại không được Apple trang bị công nghệ màn hình cảm ứng lực 3D Touch?</strong>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-md-6 col-lg-4 mb-4">
-                    <a href="@Url.Action("DetailEstate", "EstateProject", new { id = estate.Id })" class="prop-entry d-block">
-                        <figure>
-                            <img src="~/images/img_1.jpg" alt="Image" class="img-fluid">
-                        </figure>
-                        <div class="prop-text">
-                            <div class="inner">
-                                <h3 class="title">@estate.Title</h3>
-                                <p class="location">Vị trí: @estate.EstateCatalog.Name</p>
-                            </div>
-                            <div class="prop-more-info">
-                                <div class="inner d-flex">
-                                    <div class="col m-t-10">
-                                        <strong>Tại sao iPhone SE sở hữu cầu hình ngang ngửa iPhone 6s nhưng lại không được Apple trang bị công nghệ màn hình cảm ứng lực 3D Touch?</strong>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-md-6 col-lg-4 mb-4">
-                    <a href="@Url.Action("DetailEstate", "EstateProject", new { id = estate.Id })" class="prop-entry d-block">
-                        <figure>
-                            <img src="~/images/img_1.jpg" alt="Image" class="img-fluid">
-                        </figure>
-                        <div class="prop-text">
-                            <div class="inner">
-                                <h3 class="title">@estate.Title</h3>
-                                <p class="location">Vị trí: @estate.EstateCatalog.Name</p>
-                            </div>
-                            <div class="prop-more-info">
-                                <div class="inner d-flex">
-                                    <div class="col m-t-10">
-                                        <strong>Tại sao iPhone SE sở hữu cầu hình ngang ngửa iPhone 6s nhưng lại không được Apple trang bị công nghệ màn hình cảm ứng lực 3D Touch?</strong>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-md-6 col-lg-4 mb-4">
-                    <a href="@Url.Action("DetailEstate", "EstateProject", new { id = estate.Id })" class="prop-entry d-block">
-                        <figure>
-                            <img src="~/images/img_1.jpg" alt="Image" class="img-fluid">
-                        </figure>
-                        <div class="prop-text">
-                            <div class="inner">
-                                <h3 class="title">@estate.Title</h3>
-                                <p class="location">Vị trí: @estate.EstateCatalog.Name</p>
-                            </div>
-                            <div class="prop-more-info">
-                                <div class="inner d-flex">
-                                    <div class="col m-t-10">
-                                        <strong>Tại sao iPhone SE sở hữu cầu hình ngang ngửa iPhone 6s nhưng lại không được Apple trang bị công nghệ màn hình cảm ứng lực 3D Touch?</strong>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-md-6 col-lg-4 mb-4">
-                    <a href="@Url.Action("DetailEstate", "EstateProject", new { id = estate.Id })" class="prop-entry d-block">
-                        <figure>
-                            <img src="~/images/img_1.jpg" alt="Image" class="img-fluid">
-                        </figure>
-                        <div class="prop-text">
-                            <div class="inner">
-                                <h3 class="title">@estate.Title</h3>
-                                <p class="location">Vị trí: @estate.EstateCatalog.Name</p>
-                            </div>
-                            <div class="prop-more-info">
-                                <div class="inner d-flex">
-                                    <div class="col m-t-10">
-                                        <strong>Tại sao iPhone SE sở hữu cầu hình ngang ngửa iPhone 6s nhưng lại không được Apple trang bị công nghệ màn hình cảm ứng lực 3D Touch?</strong>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-md-6 col-lg-4 mb-4">
-                    <a href="@Url.Action("DetailEstate", "EstateProject", new { id = estate.Id })" class="prop-entry d-block">
-                        <figure>
-                            <img src="~/images/img_1.jpg" alt="Image" class="img-fluid">
-                        </figure>
-                        <div class="prop-text">
-                            <div class="inner">
-                                <h3 class="title">@estate.Title</h3>
-                                <p class="location">Vị trí: @estate.EstateCatalog.Name</p>
-                            </div>
-                            <div class="prop-more-info">
-                                <div class="inner d-flex">
-                                    <div class="col m-t-10">
-                                        <strong>Tại sao iPhone SE sở hữu cầu hình ngang ngửa iPhone 6s nhưng lại không được Apple trang bị công nghệ màn hình cảm ứng lực 3D Touch?</strong>
+                                        @*<strong>Tại sao iPhone SE sở hữu cầu hình ngang ngửa iPhone 6s nhưng lại không được Apple trang bị công nghệ màn hình cảm ứng lực 3D Touch?</strong>*@
+                                        <strong>@estate.ShortDescription</strong>
                                     </div>
                                 </div>
                             </div>
