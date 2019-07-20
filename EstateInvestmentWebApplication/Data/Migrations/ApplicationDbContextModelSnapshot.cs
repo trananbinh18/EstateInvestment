@@ -15,9 +15,34 @@ namespace EstateInvestmentWebApplication.Data.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.2.4-servicing-10062")
+                .HasAnnotation("ProductVersion", "2.1.11-servicing-32099")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("EstateInvestmentWebApplication.Models.DatabaseEntitiesModel.Consultation", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Content")
+                        .IsRequired();
+
+                    b.Property<DateTime>("CreateDate");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired();
+
+                    b.Property<string>("UserEmail")
+                        .IsRequired();
+
+                    b.Property<string>("UserName")
+                        .IsRequired();
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Consultations");
+                });
 
             modelBuilder.Entity("EstateInvestmentWebApplication.Models.DatabaseEntitiesModel.EstateCatalog", b =>
                 {
@@ -55,6 +80,8 @@ namespace EstateInvestmentWebApplication.Data.Migrations
                         .IsRequired();
 
                     b.Property<string>("UserId");
+
+                    b.Property<bool>("Visible");
 
                     b.HasKey("Id");
 
@@ -117,6 +144,8 @@ namespace EstateInvestmentWebApplication.Data.Migrations
 
                     b.Property<string>("UserId");
 
+                    b.Property<bool>("Visible");
+
                     b.HasKey("Id");
 
                     b.HasIndex("UserId");
@@ -161,6 +190,10 @@ namespace EstateInvestmentWebApplication.Data.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles");
+
+                    b.HasData(
+                        new { Id = "a18be9c0-aa65-4af8-bd17-00bd9344e575", ConcurrencyStamp = "3ddb7b95-3d8a-4ad1-b78f-7646ea0a97a7", Name = "Admin", NormalizedName = "Admin" }
+                    );
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -232,6 +265,10 @@ namespace EstateInvestmentWebApplication.Data.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
+
+                    b.HasData(
+                        new { Id = "a18be9c0-aa65-4af8-bd17-00bd9344e575", AccessFailedCount = 0, ConcurrencyStamp = "6cf30862-1af8-4550-aef9-d091aec0752d", Email = "admindatnen@gmail.com", EmailConfirmed = false, LockoutEnabled = false, NormalizedUserName = "admin", PasswordHash = "AQAAAAEAACcQAAAAEDt4p45Nm6s0QmoNtH3St/cZ/6fwFGjBHZDTHveloonZnlQeAvlzJZz0+wI14ijjSA==", PhoneNumberConfirmed = false, SecurityStamp = "", TwoFactorEnabled = false, UserName = "admin" }
+                    );
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -283,6 +320,10 @@ namespace EstateInvestmentWebApplication.Data.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles");
+
+                    b.HasData(
+                        new { UserId = "a18be9c0-aa65-4af8-bd17-00bd9344e575", RoleId = "a18be9c0-aa65-4af8-bd17-00bd9344e575" }
+                    );
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>

@@ -25,15 +25,19 @@ namespace EstateInvestmentWebApplication.Controllers
         public async Task<IActionResult> Index(int id = 0,int page = 1)
         {
             IOrderedQueryable<EstateProject> listEstate;
+            List<New> listNew;
+            listNew = _dbContext.News.Where(x => x.Visible == true).OrderByDescending(x => x.CreateDate).Take(3).ToList();
+            ViewBag.listNew = listNew;
+
             //Load Estate Project by catalog
             if (id != 0)
             {
-                listEstate = _dbContext.EstateProjects.Where(x => x.CatalogId == id).OrderByDescending(x => x.CreateDate); ;
+                listEstate = _dbContext.EstateProjects.Where(x => x.Visible == true).Where(x => x.CatalogId == id).OrderByDescending(x => x.CreateDate);
             }
             //Default is all Estate Project of catalog
             else
             {
-                listEstate = _dbContext.EstateProjects.OrderByDescending(x => x.CreateDate); ;
+                listEstate = _dbContext.EstateProjects.Where(x => x.Visible == true).OrderByDescending(x => x.CreateDate);
             }
 
             var model = await PagingList.CreateAsync(listEstate, 6, page);
@@ -58,9 +62,14 @@ namespace EstateInvestmentWebApplication.Controllers
         }
 
         [Route("tin-tuc")]
-        public IActionResult News()
+        public async Task<IActionResult> News(int page = 1)
         {
-            return View();
+            IOrderedQueryable<New> listNew;
+
+            listNew = _dbContext.News.Where(x => x.Visible == true).OrderByDescending(x => x.CreateDate);
+            var model = await PagingList.CreateAsync(listNew, 6, page);
+
+            return View(model);
         }
 
         public IActionResult Error()

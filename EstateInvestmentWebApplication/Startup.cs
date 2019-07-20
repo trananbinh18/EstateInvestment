@@ -14,6 +14,8 @@ using EstateInvestmentWebApplication.Services;
 using Microsoft.AspNetCore.Http;
 using System.Timers;
 using ReflectionIT.Mvc.Paging;
+using EstateInvestmentWebApplication.Models.DatabaseEntitiesModel;
+using Microsoft.AspNetCore.Mvc;
 
 namespace EstateInvestmentWebApplication
 {
@@ -29,24 +31,26 @@ namespace EstateInvestmentWebApplication
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseLazyLoadingProxies().UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            services.AddDbContext<ApplicationDbContext>(option =>
+                option.UseLazyLoadingProxies().UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))
+            );
 
             services.AddIdentity<IdentityUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
-            // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
 
-            services.AddMvc();
             services.AddPaging();
 
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env,UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
         {
+            
             //Số lượng user access
             int countUserAccess = 0;
 
@@ -55,12 +59,8 @@ namespace EstateInvestmentWebApplication
             int fakeToken = ran.Next() * 10000;
             string fakeTokenServer = fakeToken.ToString();
 
-            //Tạo Timer reset fakeTokenServer
-            double resetTime = (23-DateTime.Now.Hour)*(3.6e+6) +(59 - DateTime.Now.Minute)* 60000;
-            Timer timer = new Timer(resetTime);
-            timer.Elapsed += new ElapsedEventHandler((sender, e) => ResetCountUserAccess(sender, e,ref countUserAccess,ref fakeTokenServer));
-            timer.Start();
-
+            //Lấy ngày hiện tại để check đã qua ngày chưa
+            int currentDay = DateTime.Now.DayOfYear;
 
 
             if (env.IsDevelopment())
@@ -77,12 +77,30 @@ namespace EstateInvestmentWebApplication
             app.UseStaticFiles();
 
             app.UseAuthentication();
-
+            
 
             //Middleware count số lượng User truy cập vào page
             app.Use(async (context, next) =>
             {
+                //Check nếu vào Ngày mới save countUserAccess vào db và reset
+                if (currentDay != DateTime.Now.DayOfYear)
+                {
+                    currentDay = DateTime.Now.DayOfYear;
+                    ApplicationDbContext dbContext = context.RequestServices.GetService<ApplicationDbContext>();
+                    NumberUserAccess userAccessInDay = new NumberUserAccess();
+                    userAccessInDay.Date = DateTime.Now.AddDays(-1);
+                    userAccessInDay.UserNumber = countUserAccess;
+                    dbContext.Add(userAccessInDay);
+                    dbContext.SaveChanges();
 
+                    //Reset Token
+                    fakeToken = ran.Next() * 10000;
+                    fakeTokenServer = fakeToken.ToString();
+                    countUserAccess = 0;
+
+                }
+
+                //Count user
                 var fakeTokenClient = context.Request.Cookies["Fake_token"];
                 if (fakeTokenClient != fakeTokenServer)
                 {
@@ -93,7 +111,7 @@ namespace EstateInvestmentWebApplication
                     context.Response.Cookies.Append("Fake_token", fakeTokenServer,options);
                     countUserAccess++;
                 }
-
+                
                 //Truyền biến countUserAccess qua các controller
                 context.Items["countUserAccess"] = countUserAccess;
 
@@ -101,6 +119,7 @@ namespace EstateInvestmentWebApplication
 
             });
 
+            
 
             app.UseMvc(routes =>
             {
@@ -108,27 +127,12 @@ namespace EstateInvestmentWebApplication
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
-        }
 
-        private static void ResetCountUserAccess(Object source, ElapsedEventArgs e,ref int countUserAccess,ref string fakeTokenServer)
-        {
-            var timer = source as Timer;
-            if(timer != null)
-            {
-                //Reset Token
-                Random ran = new Random();
-                int fakeToken = ran.Next() * 10000;
-                fakeTokenServer = fakeToken.ToString();
+            DataSeeder.Initialize(roleManager, userManager).Wait();
 
-                countUserAccess = 0;
-
-                //Set lại Interval
-                double resetTime = (23 - DateTime.Now.Hour) * (3.6e+6) + (59 - DateTime.Now.Minute) * 60000;
-                timer.Interval = resetTime;
-                timer.Start();
-
-            }
         }
 
     }
+
+
 }

@@ -1,4 +1,8 @@
-﻿@{
+﻿@using ReflectionIT.Mvc.Paging
+
+@model PagingList<EstateInvestmentWebApplication.Models.DatabaseEntitiesModel.New>
+
+@{
     ViewData["Title"] = "Tin tức";
 }
 
@@ -6,67 +10,26 @@
     <div class="container">
 
         <div class="row mb-5">
-            <div class="col-md-6 col-lg-4 mb-5" data-aos="fade-up" data-aos-delay="100">
-                <a href="#"><img src="~/images/img_4.jpg" alt="Image" class="img-fluid"></a>
-                <div class="p-4 bg-white">
-                    <span class="d-block text-secondary small text-uppercase">Jan 20th, 2019</span>
-                    <h2 class="h5 text-black mb-3"><a href="#">When To Sell &amp; How Much To Sell?</a></h2>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias enim, ipsa exercitationem veniam quae sunt.</p>
-                </div>
-            </div>
-            <div class="col-md-6 col-lg-4 mb-5" data-aos="fade-up" data-aos-delay="200">
-                <a href="#"><img src="~/images/img_2.jpg" alt="Image" class="img-fluid"></a>
-                <div class="p-4 bg-white">
-                    <span class="d-block text-secondary small text-uppercase">Jan 20th, 2019</span>
-                    <h2 class="h5 text-black mb-3"><a href="#">When To Sell &amp; How Much To Sell?</a></h2>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias enim, ipsa exercitationem veniam quae sunt.</p>
-                </div>
-            </div>
-            <div class="col-md-6 col-lg-4 mb-5" data-aos="fade-up" data-aos-delay="300">
-                <a href="#"><img src="~/images/img_4.jpg" alt="Image" class="img-fluid"></a>
-                <div class="p-4 bg-white">
-                    <span class="d-block text-secondary small text-uppercase">Jan 20th, 2019</span>
-                    <h2 class="h5 text-black mb-3"><a href="#">When To Sell &amp; How Much To Sell?</a></h2>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias enim, ipsa exercitationem veniam quae sunt.</p>
-                </div>
-            </div>
 
-            <div class="col-md-6 col-lg-4 mb-5" data-aos="fade-up" data-aos-delay="100">
-                <a href="#"><img src="~/images/img_5.jpg" alt="Image" class="img-fluid"></a>
-                <div class="p-4 bg-white">
-                    <span class="d-block text-secondary small text-uppercase">Jan 20th, 2019</span>
-                    <h2 class="h5 text-black mb-3"><a href="#">When To Sell &amp; How Much To Sell?</a></h2>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias enim, ipsa exercitationem veniam quae sunt.</p>
+            @foreach (var news in Model)
+            {
+
+                <div class="col-md-6 col-lg-4 mb-5" data-aos="fade-up" data-aos-delay="300">
+                    <a href="@Url.Action("DetailNew", "New", new { id = news.Id })"><img src="@news.ImagePath" alt="Image" class="img-fluid"></a>
+                    <div class="p-4 bg-white">
+                        <span class="d-block text-secondary small text-uppercase">@news.CreateDate</span>
+                        <h2 class="h5 text-black mb-3"><a href="#">@news.Title</a></h2>
+                        <p>@news.ShortDescription</p>
+                    </div>
                 </div>
-            </div>
-            <div class="col-md-6 col-lg-4 mb-5" data-aos="fade-up" data-aos-delay="200">
-                <a href="#"><img src="~/images/img_6.jpg" alt="Image" class="img-fluid"></a>
-                <div class="p-4 bg-white">
-                    <span class="d-block text-secondary small text-uppercase">Jan 20th, 2019</span>
-                    <h2 class="h5 text-black mb-3"><a href="#">When To Sell &amp; How Much To Sell?</a></h2>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias enim, ipsa exercitationem veniam quae sunt.</p>
-                </div>
-            </div>
-            <div class="col-md-6 col-lg-4 mb-5" data-aos="fade-up" data-aos-delay="300">
-                <a href="#"><img src="~/images/img_3.jpg" alt="Image" class="img-fluid"></a>
-                <div class="p-4 bg-white">
-                    <span class="d-block text-secondary small text-uppercase">Jan 20th, 2019</span>
-                    <h2 class="h5 text-black mb-3"><a href="#">When To Sell &amp; How Much To Sell?</a></h2>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias enim, ipsa exercitationem veniam quae sunt.</p>
-                </div>
-            </div>
+            }
 
         </div>
+
         <div class="row">
             <div class="col-md-12 text-center">
                 <div class="site-pagination">
-                    <a href="#" class="active">1</a>
-                    <a href="#">2</a>
-                    <a href="#">3</a>
-                    <a href="#">4</a>
-                    <a href="#">5</a>
-                    <span>...</span>
-                    <a href="#">10</a>
+                    <vc:pager paging-list="@Model" />
                 </div>
             </div>
         </div>

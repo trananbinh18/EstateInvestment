@@ -27,6 +27,8 @@ namespace EstateInvestmentWebApplication.Models.DatabaseEntitiesModel
 
         public DateTime CreateDate { get; set; } = DateTime.Now;
 
+        public Boolean Visible { get; set; }
+
         [ForeignKey("EstateCatalog")]
         public int CatalogId { get; set; }
 

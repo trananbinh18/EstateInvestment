@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using EstateInvestmentWebApplication.Models;
 using Microsoft.AspNetCore.Identity;
 using EstateInvestmentWebApplication.Models.DatabaseEntitiesModel;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace EstateInvestmentWebApplication.Data
 {
@@ -31,6 +32,8 @@ namespace EstateInvestmentWebApplication.Data
         public DbSet<Log> Logs { get; set; }
         public DbSet<New> News { get; set; }
         public DbSet<NumberUserAccess> NumberUserAccesses { get; set; }
+        public DbSet<Consultation> Consultations { get; set; }
+
 
 
     }

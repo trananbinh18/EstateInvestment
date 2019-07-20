@@ -1,0 +1,40 @@
+﻿
+@{
+    ViewData["Title"] = "NumberUserAccessChart";
+}
+
+<h2>Thống kê lượng user truy cập</h2>
+
+<canvas id="myChart" style="max-width:900px;max-height:700px;"></canvas>
+
+
+<script src="~/js/chartjs/chart.js/dist/Chart.js"></script>
+
+<script>
+    $.getJSON("@Url.Action("GetListNumberUserAccess","NumberUserAccess")",
+        function (data) {
+            new Chart(document.getElementById("myChart"), {
+            "type": "line",
+            "data": {
+            "labels": data.day,
+            "datasets": [{
+                "label": "Số lượng người truy cập trong ngày",
+                "data": data.numberUser,
+                "fill": false, "borderColor": "rgb(75, 192, 192)",
+                "lineTension": 0.1
+            }]
+            },
+            "options": {
+              tooltips: {
+                callbacks: {
+                  label: (item) => `${item.yLabel} Người`,
+                },
+              },
+            }
+
+            });
+    });
+
+    
+
+</script>

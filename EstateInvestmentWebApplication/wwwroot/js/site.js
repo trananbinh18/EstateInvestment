@@ -33,4 +33,23 @@ $('.image-upload-wrap').bind('dragleave', function () {
     $('.image-upload-wrap').removeClass('image-dropping');
 });
 
+
 //End Upload Image
+
+
+//Begin Consultation Form
+
+function ClearFormConsultation() {
+    $("#UserNameConsultation").val("");
+    $("#UserEmailConsultation").val("");
+    $("#PhoneNumberConsultation").val("");
+    $("#ContentConsultation").val("");
+}
+
+function ClearFormConsultationContact() {
+    $("#UserNameConsultationContact").val("");
+    $("#UserEmailConsultationContact").val("");
+    $("#PhoneNumberConsultationContact").val("");
+    $("#ContentConsultationContact").val("");
+}
+

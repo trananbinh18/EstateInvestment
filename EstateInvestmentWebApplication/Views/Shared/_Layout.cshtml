@@ -110,28 +110,28 @@
                       <span aria-hidden="true">&times;</span>
                   </button>
               </div>
-              <form asp-controller="" asp-action="">
+              <form id="formConsultation" asp-controller="" asp-action="">
                   <div class="modal-body">
                       <div class="form-group required-field">
                           <label>Họ và tên:</label>
-                          <input type="text" class="form-control" id="" placeholder="Họ và tên" value="">
+                          <input type="text" class="form-control" name="UserName" id="UserNameConsultation" placeholder="Họ và tên" value="">
                       </div>
                       <div class="form-group">
                           <label>Địa chỉ email:</label>
-                          <input type="text" class="form-control" id="" placeholder="Địa chỉ email" value="">
+                          <input type="text" class="form-control" name="UserEmail" id="UserEmailConsultation" placeholder="Địa chỉ email" value="">
                       </div>
                       <div class="form-group required-field">
                           <label>Số điện thoại:</label>
-                          <input type="text" class="form-control" id="" placeholder="Số điện thoại" value="">
+                          <input type="text" class="form-control" name="PhoneNumber" id="PhoneNumberConsultation" placeholder="Số điện thoại" value="">
                       </div>
                       <div class="form-group required-field">
                           <label>Thông tin tư vấn:</label>
-                          <input type="text" class="form-control" id="" placeholder="Thông tin tư vấn" value="">
+                          <input type="text" class="form-control" name="Content" id="ContentConsultation" placeholder="Thông tin tư vấn" value="">
                       </div>
                   </div>
                   <div class="modal-footer">
                       <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
-                      <button type="submit" class="btn btn-primary">Đăng ký</button>
+                      <button id="btnSubmitConsultation" type="submit" class="btn btn-primary">Đăng ký</button>
                   </div>
               </form>
           </div>
@@ -199,7 +199,6 @@
                 <div class="col-md-12">
                     <p>
                         <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                        <script>Copyright & copy;</script>
                         <script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="icon-heart text-danger" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
                         <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
                     </p>
@@ -224,6 +223,34 @@
 
     <script src="~/js/main.js"></script>
     <script src="~/js/site.js"></script>
+
+    <script>
+        //Begin Submit Consultation
+        document.getElementById("formConsultation").addEventListener('submit', (e) => {
+            const formData = new FormData(e.target);
+            $("btnSubmitConsultation").prop('disabled', true);
+            $.ajax({
+                url: "@Url.Action("CreateConsultation","Consultation")",
+                contentType: false,
+                type: "post",
+                processData: false,
+                data: formData
+            }).done(function (data) {
+                $("btnSubmitConsultation").prop('disabled', false);
+
+                if (data.status == "success") {
+                    alert(data.message);
+                    ClearFormConsultation();
+                } else {
+                    alert(data.message);
+
+                }
+            })
+
+            e.preventDefault()
+        });
+    </script>
+
 
     @RenderSection("Scripts", required: false)
 </body>

@@ -1,0 +1,110 @@
+﻿@using ReflectionIT.Mvc.Paging
+
+@model PagingList<EstateInvestmentWebApplication.Models.DatabaseEntitiesModel.Consultation>
+@addTagHelper *,ReflectionIT.Mvc.Paging
+
+@{
+    ViewData["Title"] = "ListConsultation";
+    int stt = 1;
+    Model.Action = ".."+Url.Action("ListConsultation", "Consultation");
+
+}
+
+<h2>Danh sách thông tin tư vấn</h2>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                STT
+            </th>
+            <th>
+                Ngày tạo
+            </th>
+            <th>
+                Họ và Tên
+            </th>
+            <th>
+                Email
+            </th>
+            <th>
+                Số Điện Thoại
+            </th>
+            <th>
+                Nội Dung tư vấn
+            </th>
+            <th>Tùy chọn</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @stt
+                    @{ stt++;}
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreateDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserEmail)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PhoneNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Content)
+                </td>
+                <td>
+                    <a class="btnDelete" id="btnDelete_@item.Id" href="#" data-toggle="modal" data-target="#deleteModel">Xoá</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div class="row">
+    <div class="col-md-12 text-center">
+        <div class="site-pagination">
+            <vc:pager paging-list="@Model" />
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="deleteModel" tabindex="-1" role="dialog" aria-labelledby="deleteModelLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form asp-action="DeleteConsultation" method="post">
+
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModelLabel">Xác nhận xóa dự án</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Bạn có Đồng ý xoá thông tin tư vấn này
+                    <input id="detailId" name="id" value="0" style="display:none" />
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                    <button type="submit" class="btn btn-primary">Đồng ý</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(".btnDelete").on("click", function (e) {
+            var target = e.target;
+            var idConsultation = target.id.split("_")[1]
+            $("#detailId").val(idConsultation);
+    })
+</script>
+

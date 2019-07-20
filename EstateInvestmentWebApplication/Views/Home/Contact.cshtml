@@ -21,24 +21,24 @@
 
 
 
-                <form action="#" class="p-5 bg-white border">
+                <form id="formConsultationContact" class="p-5 bg-white border">
 
                     <div class="row form-group required-field">
                         <div class="col-md-12 mb-3 mb-md-0">
                             <label class="font-weight-bold" for="fullname">Họ và tên:</label>
-                            <input type="text" id="fullname" name="fullname" class="form-control" placeholder="Mời nhập họ và tên">
+                            <input type="text" id="UserNameConsultationContact" name="UserName" class="form-control" placeholder="Mời nhập họ và tên">
                         </div>
                     </div>
                     <div class="row form-group">
                         <div class="col-md-12">
                             <label class="font-weight-bold" for="email">Địa chỉ email:</label>
-                            <input type="email" id="email" name="email" class="form-control" placeholder="Mời nhập địa chỉ email">
+                            <input type="email" id="UserEmailConsultationContact" name="UserEmail" class="form-control" placeholder="Mời nhập địa chỉ email">
                         </div>
                     </div>
                     <div class="row form-group required-field"">
                         <div class="col-md-12">
                             <label class="font-weight-bold" for="phone">Số điện thoại:</label>
-                            <input type="text" id="phone" name="phone" class="form-control" placeholder="Mời nhập số điện thoại">
+                            <input type="text" id="PhoneNumberConsultationContact" name="PhoneNumber" class="form-control" placeholder="Mời nhập số điện thoại">
                         </div>
                     </div>
 
@@ -46,13 +46,13 @@
                     <div class="row form-group required-field"">
                         <div class="col-md-12">
                             <label class="font-weight-bold" for="message">Thông tin cần tư vấn:</label>
-                            <textarea id="message" name="message" cols="30" rows="5" class="form-control" placeholder="Mời nhập thông tin cần tư vấn"></textarea>
+                            <textarea id="ContentConsultationContact" name="Content" cols="30" rows="5" class="form-control" placeholder="Mời nhập thông tin cần tư vấn"></textarea>
                         </div>
                     </div>
 
                     <div class="row form-group">
                         <div class="col-md-12">
-                            <input type="submit" value="Gửi thông tin" class="btn btn-primary py-2 px-4">
+                            <input id="btnSubmitConsultationContact" type="submit" value="Gửi thông tin" class="btn btn-primary py-2 px-4">
                         </div>
                     </div>
 
@@ -76,3 +76,30 @@
         </div>
     </div>
 </div>
+
+<script>
+        //Begin Submit Consultation
+        document.getElementById("formConsultationContact").addEventListener('submit', (e) => {
+            const formData = new FormData(e.target);
+            $("btnSubmitConsultationContact").prop('disabled', true);
+            $.ajax({
+                url: "@Url.Action("CreateConsultation","Consultation")",
+                contentType: false,
+                type: "post",
+                processData: false,
+                data: formData
+            }).done(function (data) {
+                $("btnSubmitConsultationContact").prop('disabled', false);
+
+                if (data.status == "success") {
+                    alert(data.message);
+                    ClearFormConsultationContact();
+                } else {
+                    alert(data.message);
+
+                }
+            })
+
+            e.preventDefault()
+        });
+</script>

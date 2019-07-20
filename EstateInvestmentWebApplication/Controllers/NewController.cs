@@ -7,11 +7,13 @@ using System.Threading.Tasks;
 using EstateInvestmentWebApplication.Data;
 using EstateInvestmentWebApplication.Models.DatabaseEntitiesModel;
 using EstateInvestmentWebApplication.Models.ViewModels;
+using EstateInvestmentWebApplication.Services;
 using HtmlAgilityPack;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using ReflectionIT.Mvc.Paging;
 
 namespace EstateInvestmentWebApplication.Controllers
 {
@@ -56,6 +58,7 @@ namespace EstateInvestmentWebApplication.Controllers
                 news.ShortDescription = model.ShortDescription;
                 news.Content = model.Content;
                 news.UserId = _userManager.GetUserId(User);
+                news.Visible = true;
 
                 _dbContext.News.Add(news);
                 _dbContext.SaveChanges();
@@ -138,16 +141,29 @@ namespace EstateInvestmentWebApplication.Controllers
         }
 
         [HttpGet]
-        [Route("admin/tin-tuc")]
-        public IActionResult ListNew()
+        [Route("admin/tin-tuc/{page?}")]
+        public async Task<IActionResult> ListNew(int page = 1)
         {
-            var listNews = _dbContext.News.ToList();
-            return View(listNews);
+            var listNews = _dbContext.News.OrderByDescending(x => x.CreateDate);
+            var model = await PagingList.CreateAsync(listNews, 10, page);
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [Route("admin/tin-tuc/doi-trang-thai")]
+        public void ChangeVisible([FromForm]int id, [FromForm]bool value)
+        {
+            var news = _dbContext.News.Find(id);
+            news.Visible = value;
+            _dbContext.Entry(news).State = EntityState.Modified;
+            _dbContext.SaveChanges();
         }
 
 
         [HttpPost]
-        public IActionResult DeleteNew([FromBody]int id)
+        [Route("admin/tin-tuc/xoa-tin-tuc")]
+        public IActionResult DeleteNew([FromForm]int id)
         {
             var news = _dbContext.News.Find(id);
 
@@ -156,21 +172,26 @@ namespace EstateInvestmentWebApplication.Controllers
             byte[] byteArray = Encoding.ASCII.GetBytes(news.Content);
             MemoryStream stream = new MemoryStream(byteArray);
             doc.Load(stream);
+            stream.Dispose();
 
             var lstTagImg = doc.DocumentNode.SelectNodes("/p/img");
 
-            //Delete Image Content
-            foreach (var tag in lstTagImg)
+            if (lstTagImg != null)
             {
-                var imgSrc = tag.Attributes["src"];
-                string[] arrPathImg = imgSrc.Value.Split('/');
-                string fileNameImg = arrPathImg[arrPathImg.Length - 1];
-                string filePathImg = Path.Combine(Directory.GetCurrentDirectory(), _hostingEnvironment.WebRootPath, "images", "imagescontent", fileNameImg);
-                if (System.IO.File.Exists(filePathImg))
+                //Delete Image Content
+                foreach (var tag in lstTagImg)
                 {
-                    System.IO.File.Delete(filePathImg);
+                    var imgSrc = tag.Attributes["src"];
+                    string[] arrPathImg = imgSrc.Value.Split('/');
+                    string fileNameImg = arrPathImg[arrPathImg.Length - 1];
+                    string filePathImg = Path.Combine(Directory.GetCurrentDirectory(), _hostingEnvironment.WebRootPath, "images", "imagescontent", fileNameImg);
+                    if (System.IO.File.Exists(filePathImg))
+                    {
+                        System.IO.File.Delete(filePathImg);
+                    }
                 }
             }
+
 
             //Delete Image Thumnails
             string[] arrPath = news.ImagePath.Split('/');
@@ -185,5 +206,6 @@ namespace EstateInvestmentWebApplication.Controllers
             _dbContext.SaveChanges();
             return RedirectToAction("ListNew");
         }
+
     }
 }

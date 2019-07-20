@@ -1,21 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using EstateInvestmentWebApplication.Data;
-using EstateInvestmentWebApplication.Models;
-using System.IO;
+﻿using EstateInvestmentWebApplication.Data;
+using EstateInvestmentWebApplication.Models.DatabaseEntitiesModel;
+using EstateInvestmentWebApplication.Models.ViewModels;
+using HtmlAgilityPack;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using EstateInvestmentWebApplication.Models.ViewModels;
-using EstateInvestmentWebApplication.Models.DatabaseEntitiesModel;
 using Microsoft.AspNetCore.Identity;
-using System.Security.Claims;
-using Microsoft.AspNetCore.Http.Internal;
-using System.Text;
-using HtmlAgilityPack;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using ReflectionIT.Mvc.Paging;
+using System;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace EstateInvestmentWebApplication.Controllers
 {
@@ -59,6 +56,7 @@ namespace EstateInvestmentWebApplication.Controllers
                 estateProject.ShortDescription = model.ShortDescription;
                 estateProject.Content = model.Content;
                 estateProject.CatalogId = model.CatalogId;
+                estateProject.Visible = true;
                 estateProject.UserId = _userManager.GetUserId(User);
 
                 _dbContext.EstateProjects.Add(estateProject);
@@ -91,6 +89,15 @@ namespace EstateInvestmentWebApplication.Controllers
             return View(createModel);
         }
 
+        [HttpPost]
+        [Route("admin/du-an/doi-trang-thai")]
+        public void ChangeVisible([FromForm]int id, [FromForm]bool value)
+        {
+            var estate = _dbContext.EstateProjects.Find(id);
+            estate.Visible = value;
+            _dbContext.Entry(estate).State = EntityState.Modified;
+            _dbContext.SaveChanges();
+        }
 
 
         [HttpPost]
@@ -146,7 +153,7 @@ namespace EstateInvestmentWebApplication.Controllers
 
 
         [HttpPost]
-        public IActionResult DeleteEstate([FromBody]int id)
+        public IActionResult DeleteEstate([FromForm]int id)
         {
             var estate = _dbContext.EstateProjects.Find(id);
 
@@ -155,19 +162,23 @@ namespace EstateInvestmentWebApplication.Controllers
             byte[] byteArray = Encoding.ASCII.GetBytes(estate.Content);
             MemoryStream stream = new MemoryStream(byteArray);
             doc.Load(stream);
+            stream.Dispose();
 
             var lstTagImg = doc.DocumentNode.SelectNodes("/p/img");
 
-            //Delete Image Content
-            foreach (var tag in lstTagImg)
+            if (lstTagImg != null)
             {
-                var imgSrc = tag.Attributes["src"];
-                string[] arrPathImg = imgSrc.Value.Split('/');
-                string fileNameImg = arrPathImg[arrPathImg.Length - 1];
-                string filePathImg = Path.Combine(Directory.GetCurrentDirectory(), _hostingEnvironment.WebRootPath, "images", "imagescontent", fileNameImg);
-                if (System.IO.File.Exists(filePathImg))
+                //Delete Image Content
+                foreach (var tag in lstTagImg)
                 {
-                    System.IO.File.Delete(filePathImg);
+                    var imgSrc = tag.Attributes["src"];
+                    string[] arrPathImg = imgSrc.Value.Split('/');
+                    string fileNameImg = arrPathImg[arrPathImg.Length - 1];
+                    string filePathImg = Path.Combine(Directory.GetCurrentDirectory(), _hostingEnvironment.WebRootPath, "images", "imagescontent", fileNameImg);
+                    if (System.IO.File.Exists(filePathImg))
+                    {
+                        System.IO.File.Delete(filePathImg);
+                    }
                 }
             }
 
@@ -188,11 +199,12 @@ namespace EstateInvestmentWebApplication.Controllers
 
 
         [HttpGet]
-        [Route("admin/du-an")]
-        public IActionResult ListEstate()
+        [Route("admin/du-an/{page?}")]
+        public async Task<IActionResult> ListEstate(int page = 1)
         {
-            var listEstate = _dbContext.EstateProjects.ToList();
-            return View(listEstate);
+            var listEstate = _dbContext.EstateProjects.OrderByDescending(x => x.CreateDate);
+            var model = await PagingList.CreateAsync(listEstate, 10, page);
+            return View(model);
         }
 
 
@@ -225,11 +237,11 @@ namespace EstateInvestmentWebApplication.Controllers
                 }
 
                 return Json(new { status = "fail", message = "Không tìm thấy ảnh" });
-                
+
             }
             catch (Exception e)
             {
-                return Json(new { status= "fail", message= "Không thể xoá ảnh" });
+                return Json(new { status = "fail", message = "Không thể xoá ảnh" });
             }
 
         }

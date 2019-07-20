@@ -1,7 +1,12 @@
-﻿@model IEnumerable<EstateInvestmentWebApplication.Models.DatabaseEntitiesModel.EstateProject>
+﻿@using ReflectionIT.Mvc.Paging
+
+@model PagingList<EstateInvestmentWebApplication.Models.DatabaseEntitiesModel.EstateProject>
+@addTagHelper *, ReflectionIT.Mvc.Paging
 
 @{
     ViewData["Title"] = "Danh sách dự án";
+    Model.Action = ".."+Url.Action("ListEstate", "EstateProject");
+
 }
 
 <div class="container">
@@ -20,8 +25,8 @@
                     Tiêu đề
                 </th>
                 @*<th>
-                    Mô tả
-                </th>*@
+                        Mô tả
+                    </th>*@
                 <th>
                     Hình ảnh
                 </th>
@@ -33,6 +38,9 @@
                 </th>
                 <th>
                     Người đăng
+                </th>
+                <th>
+                    Hiện/Ẩn dự án
                 </th>
                 <th>
                     Tùy chọn
@@ -48,8 +56,8 @@
                         @Html.DisplayFor(modelItem => item.Title)
                     </td>
                     @*<td>
-                        @Html.DisplayFor(modelItem => item.ShortDescription)
-                    </td>*@
+                            @Html.DisplayFor(modelItem => item.ShortDescription)
+                        </td>*@
                     <td>
                         <img style="max-width:150px;max-height:150px" src="@item.ImagePath" />
                     </td>
@@ -63,12 +71,75 @@
                         @Html.DisplayFor(modelItem => item.IdentityUser.UserName)
                     </td>
                     <td>
+                        @Html.CheckBoxFor(modelItem => item.Visible, new { @class = "ckbVisible", id = "tbx_" + item.Id })
+                    </td>
+                    <td>
                         <a asp-action="EditEstate" asp-route-id="@item.Id">Chỉnh sửa</a> |
                         <a asp-action="DetailEstate" asp-route-id="@item.Id">Xem chi tiết</a> |
-                        <a asp-action="Delete" asp-route-id="@item.Id">Xóa</a>
+                        <a class="btnDelete" id="btnDelete_@item.Id" href="#" data-toggle="modal" data-target="#deleteModel">Xoá</a>
                     </td>
                 </tr>
             }
         </tbody>
     </table>
+
+    <div class="row">
+        <div class="col-md-12 text-center">
+            <div class="site-pagination">
+                <vc:pager paging-list="@Model" />   
+            </div>
+        </div>
+    </div>
 </div>
+
+<div class="modal fade" id="deleteModel" tabindex="-1" role="dialog" aria-labelledby="deleteModelLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form asp-action="DeleteEstate" method="post">
+
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModelLabel">Xác nhận xóa dự án</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Bạn có Đồng ý xoá dự án này
+                    <input id="detailId" name="id" value="0" style="display:none" />
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                    <button type="submit" class="btn btn-primary">Đồng ý</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $(".ckbVisible").on("change", function (e) {
+            var target = e.target;
+            var idNew = target.id.split("_")[1]
+            var value = target.checked;
+            var formData = new FormData();
+            formData.append("id", idNew);
+            formData.append("value", value);
+
+            $.ajax({
+                url: "@Url.Action("ChangeVisible", "EstateProject")",
+                contentType: false,
+                type: "post",
+                processData: false,
+                traditional: false,
+                data: formData
+            })
+        })
+
+        $(".btnDelete").on("click", function (e) {
+            var target = e.target;
+            var idNew = target.id.split("_")[1]
+            $("#detailId").val(idNew);
+        })
+    })
+</script>
